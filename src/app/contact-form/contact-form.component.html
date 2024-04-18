@@ -1,26 +1,150 @@
-
-<div>
-    <div [formGroup]="contactForm">
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Email address</label>
-            <input required type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+<div class="container mt-5 roboto-regular mb-5">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+      <div class="card m-4">
+        <div class="text-center header mt-4">Contact Form</div>
+        <div class="card-body p-0">
+          <div>
+            <div [formGroup]="contactForm">
+              <div class="row mt-5">
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="name" class="form-label"
+                      >First Name<span class="mandatory">*</span></label
+                    >
+                    <input
+                      required="true"
+                      type="name"
+                      class="form-control"
+                      id="name"
+                      placeholder="e.g John"
+                      formControlName="name"
+                    />
+                    <div
+                      *ngIf="nameFC?.dirty || nameFC?.touched"
+                      class="alert-validator mb-3"
+                    >
+                      <div *ngIf="nameFC?.errors?.['required']">
+                        Name is required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="surname" class="form-label"
+                      >Last Name<span class="mandatory">*</span></label
+                    >
+                    <input
+                      required="true"
+                      type="text"
+                      class="form-control"
+                      id="surname"
+                      placeholder="e.g Smit"
+                      formControlName="surname"
+                    />
+                    <div
+                      *ngIf="surnameFC?.dirty || surnameFC?.touched"
+                      class="alert-validator mb-3"
+                    >
+                      <div *ngIf="surnameFC?.errors?.['required']">
+                        Surname is required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="email" class="form-label"
+                      >Email address<span class="mandatory">*</span></label
+                    >
+                    <input
+                      required="true"
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      placeholder="name@example.com"
+                      formControlName="email"
+                    />
+                    <div
+                      *ngIf="emailFC?.dirty || emailFC?.touched"
+                      class="alert-validator mb-3"
+                    >
+                      <div *ngIf="emailFC?.errors?.['required']">
+                        Email is required.
+                      </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="phoneNumber" class="form-label"
+                      >Phone Number<span class="mandatory">*</span></label
+                    >
+                    <input
+                      required="true"
+                      type="number"
+                      class="form-control"
+                      id="phoneNumber"
+                      placeholder="980981234"
+                      formControlName="phoneNumber"
+                    />
+                    <div
+                      *ngIf="phoneNumberFC?.dirty || phoneNumberFC?.touched"
+                      class="alert-validator mb-3"
+                    >
+                      <div *ngIf="phoneNumberFC?.errors?.['required']">
+                        Phone number is required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col">
+                  <div class="mb-3">
+                    <label for="dob" class="form-label"
+                      >Date Of Birth<span class="mandatory">*</span></label
+                    >
+                    <input
+                      required="true"
+                      type="date"
+                      class="form-control"
+                      id="dob"
+                      placeholder="01/01/2000"
+                      formControlName="dob"
+                    />
+                    <div
+                      *ngIf="dobFC?.dirty || dobFC?.touched"
+                      class="alert-validator mb-3"
+                    >
+                      <div *ngIf="dobFC?.errors?.['required']">
+                        Date of Birth is required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col"></div>
+              </div>
+            </div>
+          </div>
+          <div class="d-grid mt-5">
+            <button
+              type="button"
+              class="btn btn-primary btn-lg"
+              [disabled]="!contactForm.valid"
+              type="button"
+              (click)="onClick()"
+            >
+              Submit
+            </button>
+          </div>
         </div>
-        <div class="mb-3">
-            <label for="surname" class="form-label">Surname</label>
-            <input required type="text" class="form-control" id="surname" placeholder="Last Name">
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input required type="email" class="form-control" id="email" placeholder="name@example.com">
-        </div>
-        <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input required type="number" class="form-control" id="phoneNumber" placeholder="980981234">
-        </div>
-        <div class="mb-3">
-            <label for="dob" class="form-label">Date Of Birth</label>
-            <input required type="date" class="form-control" id="dob" placeholder="01/01/2000">
-        </div>
-        <button type="button" class="btn btn-primary" [disabled]="!contactForm.valid" type="button" (click)="onClick()">Submit</button>
-    </div> 
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
 </div>
