@@ -1,0 +1,15 @@
+
+<div>Add Contact</div>
+<div [formGroup]="contactForm">
+    <div><label for="name">Name</label></div>
+    <div><input required id="name" type="text" formControlName="name"></div>
+    <div><label for="surname">Surname</label></div>
+    <div><input required id="surname" type="text" formControlName="surname"></div>
+    <div><label for="email">Email Address</label></div>
+    <div><input required id="email" type="text" formControlName="email"></div>
+    <div><label for="phoneNumber">Phone Number</label></div>
+    <div><input required id="phoneNumber" type="text" formControlName="phoneNumber"></div>
+    <div><label for="dob">Date Of Birth</label></div>
+    <div><input required id="dob" type="text" formControlName="dob"></div>
+    <button [disabled]="!contactForm.valid" type="button" (click)="onClick()">Submit</button>
+</div> 
