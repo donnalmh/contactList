@@ -17,6 +17,12 @@
     border: none;
 }
 
+
+::placeholder {
+  color: gray;
+  opacity: 0.4; /* Firefox */
+}
+
 .form-label {
     font-weight: 100;
     color: #8f8a8a;

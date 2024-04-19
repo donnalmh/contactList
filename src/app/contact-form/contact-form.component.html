@@ -1,3 +1,14 @@
+<div>
+  <button
+    type="button"
+    class="btn btn-primary btn-lg"
+    [disabled]="!contactForm.valid"
+    type="button"
+    (click)="onClick()"
+  >
+    Back to List
+  </button>
+</div>
 <div class="container mt-5 roboto-regular mb-5">
   <div class="row">
     <div class="col"></div>
@@ -16,13 +27,13 @@
                     <input
                       required="true"
                       type="name"
-                      class="form-control"
+                      class="form-control form-control-lg"
                       id="name"
                       placeholder="e.g John"
                       formControlName="name"
                     />
                     <div
-                      *ngIf="nameFC?.dirty || nameFC?.touched"
+                      *ngIf="nameFC?.dirty || nameFC?.touched "
                       class="alert-validator mb-3"
                     >
                       <div *ngIf="nameFC?.errors?.['required']">
@@ -39,7 +50,7 @@
                     <input
                       required="true"
                       type="text"
-                      class="form-control"
+                      class="form-control  form-control-lg"
                       id="surname"
                       placeholder="e.g Smit"
                       formControlName="surname"
@@ -58,22 +69,22 @@
               <div class="row mt-3">
                 <div class="col">
                   <div class="mb-3">
-                    <label for="email" class="form-label"
+                    <label for="emailAddress" class="form-label"
                       >Email address<span class="mandatory">*</span></label
                     >
                     <input
                       required="true"
-                      type="email"
-                      class="form-control"
-                      id="email"
+                      type="emailAddress"
+                      class="form-control form-control-lg"
+                      id="emailAddress"
                       placeholder="name@example.com"
-                      formControlName="email"
+                      formControlName="emailAddress"
                     />
                     <div
-                      *ngIf="emailFC?.dirty || emailFC?.touched"
+                      *ngIf="emailAddressFC?.dirty || emailAddressFC?.touched"
                       class="alert-validator mb-3"
                     >
-                      <div *ngIf="emailFC?.errors?.['required']">
+                      <div *ngIf="emailAddressFC?.errors?.['required']">
                         Email is required.
                       </div>
                     </div>
@@ -81,22 +92,22 @@
                 </div>
                 <div class="col">
                   <div class="mb-3">
-                    <label for="phoneNumber" class="form-label"
+                    <label for="contactNumber" class="form-label"
                       >Phone Number<span class="mandatory">*</span></label
                     >
                     <input
                       required="true"
                       type="number"
-                      class="form-control"
-                      id="phoneNumber"
+                      class="form-control form-control-lg"
+                      id="contactNumber"
                       placeholder="980981234"
-                      formControlName="phoneNumber"
+                      formControlName="contactNumber"
                     />
                     <div
-                      *ngIf="phoneNumberFC?.dirty || phoneNumberFC?.touched"
+                      *ngIf="contactNumberFC?.dirty || contactNumberFC?.touched"
                       class="alert-validator mb-3"
                     >
-                      <div *ngIf="phoneNumberFC?.errors?.['required']">
+                      <div *ngIf="contactNumberFC?.errors?.['required']">
                         Phone number is required.
                       </div>
                     </div>
@@ -112,16 +123,16 @@
                     <input
                       required="true"
                       type="date"
-                      class="form-control"
+                      class="form-control form-control-lg"
                       id="dob"
                       placeholder="01/01/2000"
                       formControlName="dob"
                     />
                     <div
-                      *ngIf="dobFC?.dirty || dobFC?.touched"
+                      *ngIf="dateOfBirthFC?.dirty || dateOfBirthFC?.touched"
                       class="alert-validator mb-3"
                     >
-                      <div *ngIf="dobFC?.errors?.['required']">
+                      <div *ngIf="dateOfBirthFC?.errors?.['required']">
                         Date of Birth is required.
                       </div>
                     </div>
@@ -148,3 +159,4 @@
     <div class="col"></div>
   </div>
 </div>
+<div id='myModal'></div>
