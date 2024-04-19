@@ -1,40 +1,53 @@
-import { Component } from '@angular/core';
-import "@ag-grid-community/styles/ag-grid.css";
-import "@ag-grid-community/styles/ag-theme-quartz.css";
+import { Component, OnInit } from '@angular/core';
+
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
-
-
+import { ContactListService } from '../shared/contact-list.service';
+import { Contact } from '../shared/contact-list.model';
 interface IRow {
   make: string;
   model: string;
   price: number;
   electric: boolean;
 }
-
 @Component({
   selector: 'app-contact-list',
   standalone: true,
   imports: [AgGridAngular, AgGridModule],
   templateUrl: './contact-list.component.html',
-  styleUrl: './contact-list.component.css'
+  styleUrl: './contact-list.component.css',
+  providers: [ContactListService]
 })
 
-export class ContactListComponent {
-  themeClass = "ag-theme-quartz";
+export class ContactListComponent implements OnInit {
+  constructor(private service:ContactListService) {}
 
-  // Row Data: The data to be displayed.
-  columnDefs: ColDef[] = [ // Use ColDef[] instead of plain array
+  themeClass = "ag-theme-quartz ag-theme-clean";
+  columnDefs: ColDef[] = [ 
     { headerName: 'Name', field: 'name' },
     { headerName: 'Surname', field: 'surname' },
-    { headerName: 'Phone #', field: 'number' },
-    { headerName: 'Email', field: 'email' },
-    { headerName: 'D.O.B', field: 'dob' }
+    { headerName: 'Phone #', field: 'contactNumber' },
+    { headerName: 'Email', field: 'emailAddress' },
+    { headerName: 'D.O.B', field: 'dateOfBirth' }
   ];
 
-  rowData = [
-    { name: 'Derick', surname: 'Chandler', number: 971098353, email: "derick.chandler@hotmail.com", dob: "28-10-1977" },
-    { name: 'Susan', surname: 'Baker', number: 19877987345, email: "susan.baker@iodine.com", dob: "01-01-1978" },
-    { name: 'Tara', surname: 'Liasinatte', number: 32989085, email: "tara.l@jamisonlee.com", dob: "02-01-1977" }
-  ];
+  rowData: Contact[] = [];
+
+  ngOnInit(): void {
+      this.getData()
+  }
+
+  getData() {
+    this.service.getContactDetailList().subscribe(
+      (res) => {
+        this.rowData = res as Contact[];
+
+        console.log(res)
+      },
+      (error) => {
+        console.error('Error fetching data:',error)
+      }
+    )
+  }
+
 }

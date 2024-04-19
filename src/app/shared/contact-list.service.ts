@@ -11,6 +11,10 @@ export class ContactListService {
 
   readonly baseURL = 'http://localhost:7128/api/ContactList'
 
+  getContactDetailList() {
+    return this.http.get(this.baseURL)
+  }
+
   postContactDetail(payload: Contact) {
     return this.http.post(this.baseURL, payload) 
   }

@@ -1,4 +1,30 @@
-/* Core Grid CSS */
-@import 'ag-grid-community/styles/ag-grid.css';
-/* Quartz Theme Specific CSS */
-@import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+@import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-quartz.css";
+@import "ag-grid-community/styles/ag-theme-alpine.css";
+.header {
+    font-family: "Roboto", sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    border-bottom: 1px solid #c8e5ee;
+    color: #999191;
+}
+
+.ag-theme-clean {
+    --ag-header-background-color: white;
+    --ag-header-foreground-color: black;
+    /* --ag-font-family: 'Roboto'; */
+    --ag-font-size: 20px;
+    --ag-font-family: 'Roboto';
+    --ag-foreground-color: gray;
+    --ag-border-radius:0px;
+
+}
+
+div.ag-header-cell-label {
+    font-weight:700
+}
+
+div.ag-root-wrapper.ag-layout-normal.ag-ltr {
+    border-radius: 0px;
+}
