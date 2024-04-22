@@ -11,6 +11,11 @@ export class ContactListService {
 
   readonly baseURL = 'http://localhost:7128/api/ContactList'
 
+  getContactDetail(id: number) {
+    return this.http.get(`${this.baseURL}/${id}`)
+  }
+
+
   getContactDetailList() {
     return this.http.get(this.baseURL)
   }
@@ -20,6 +25,11 @@ export class ContactListService {
   }
 
   updateContactDetail(payload: Contact) {
-    return this.http.put(this.baseURL, payload) 
+    console.log("payload: ",payload)
+    return this.http.put(`${this.baseURL}/${payload.id}`, payload) 
+  }
+
+  deleteContactDetail(id: number) {
+    return this.http.delete(`${this.baseURL}/${id}`)
   }
 }
