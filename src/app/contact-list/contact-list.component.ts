@@ -4,6 +4,8 @@ import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { ContactListService } from '../shared/contact-list.service';
 import { Contact } from '../shared/contact-list.model';
+import { CellActionsComponent } from './cell-actions/cell-actions.component';
+import { RouterModule } from '@angular/router';
 interface IRow {
   make: string;
   model: string;
@@ -13,7 +15,7 @@ interface IRow {
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [AgGridAngular, AgGridModule],
+  imports: [AgGridAngular, AgGridModule, RouterModule],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.css',
   providers: [ContactListService]
@@ -28,13 +30,19 @@ export class ContactListComponent implements OnInit {
     { headerName: 'Surname', field: 'surname' },
     { headerName: 'Phone #', field: 'contactNumber' },
     { headerName: 'Email', field: 'emailAddress' },
-    { headerName: 'D.O.B', field: 'dateOfBirth' }
+    { headerName: 'D.O.B', field: 'dateOfBirth' },
+    { headerName: 'Actions', field: 'action', cellRenderer: CellActionsComponent
+    }
   ];
 
   rowData: Contact[] = [];
 
   ngOnInit(): void {
       this.getData()
+  }
+
+  editClick() {
+    console.log("test edit")
   }
 
   getData() {
