@@ -1,0 +1,16 @@
+.solid-colour {
+    background-color: gray;
+}
+
+.border-gray {
+    border: 1px solid #dfdfdf;
+
+}
+
+.pad-inputform {
+    padding: 10em 4em 10em;
+}
+
+.top-div {
+    margin-top:10em;
+}

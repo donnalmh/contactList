@@ -1,4 +1,4 @@
-<app-submission-modal [message]="'You have successfully submitted details'"></app-submission-modal>
+<app-submission-modal [message]="this.id ? 'Contact details have been edited successfully.' : 'Contact details have been saved successfully.'"></app-submission-modal>
 <div>
   <button
     type="button"
