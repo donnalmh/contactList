@@ -9,13 +9,16 @@ import {
 import '../../assets/poppins-font.css';
 import { ContactListService } from '../shared/contact-list.service';
 import { Contact } from '../shared/contact-list.model';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { concatMap, empty, filter } from 'rxjs';
 import moment from 'moment';
+import { SubmissionModalComponent } from './modal/submission-modal/submission-modal.component';
+
+declare var bootstrap: any;
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, RouterModule],
+  imports: [ReactiveFormsModule, NgIf, RouterModule,SubmissionModalComponent],
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css',
   providers: [ContactListService],
@@ -23,7 +26,8 @@ import moment from 'moment';
 export class ContactFormComponent implements OnInit {
   constructor(
     private service: ContactListService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   id: number | undefined= undefined;
@@ -80,24 +84,37 @@ export class ContactFormComponent implements OnInit {
   }
   onClick() {
     const data = this.formatData();
+
+
+    const triggerNotificationAndReturn = () => {
+      const myModal = new bootstrap.Modal('#exampleModal', {
+        keyboard: false
+      })
+      myModal.show();
+      
+      const myModalEl = document.getElementById('exampleModal')
+      myModalEl?.addEventListener('hidden.bs.modal', event => {
+        // do something...
+        this.service.triggerRefresh("A")
+        this.router.navigate(["/"])
+      })
+
+    }
+
     if(this.id) {
       console.log("this.id: ", this.id)
       data.id = this.id
       this.service.updateContactDetail(data).subscribe(
-        (res) => {
-          console.log(res);
-        },
-        (err) => {
-          console.log(err);
+        {
+          next: (res) => triggerNotificationAndReturn(),
+          error: (error) => console.error(error)
         }
       );
     } else {
       this.service.postContactDetail(data).subscribe(
-        (res) => {
-          console.log(res);
-        },
-        (err) => {
-          console.log(err);
+        {
+          next: (res) => triggerNotificationAndReturn(),
+          error: (error) => console.error(error)
         }
       );
     }

@@ -17,7 +17,7 @@ interface CellActionParams extends ICellRendererParams{
     <button (click)="onDeleteClick()">Delete</button>
 
   `,
-  providers: [ContactListService]
+  providers: []
 })
 
 export class CellActionsComponent implements ICellRendererAngularComp {
@@ -48,9 +48,8 @@ export class CellActionsComponent implements ICellRendererAngularComp {
     console.log("delete clicked")
     console.log(this.params.data)
     this.service.deleteContactDetail(this.params.data.id).subscribe(res =>{
-      if(res) {
-        console.log("Delted successfully")
-      }
+      this.service.displayPopupMessage(this.params.data.name + ' ' + this.params.data.surname)
+        // this.service.triggerRefresh("test")
      },
     err => {
       console.error(err)

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-submission-modal',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './submission-modal.component.css'
 })
 export class SubmissionModalComponent {
-
+  @Input() message: string = 'You have a notification'
 }
