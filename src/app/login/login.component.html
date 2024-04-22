@@ -1,0 +1,59 @@
+<div [formGroup]="loginForm" class="container mt-5 roboto-regular mb-5">
+  <div class="row mt-5">
+    <div class="col"></div>
+    <div class="col-10">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+          <div class="mb-3">
+            <label for="username" class="form-label"
+              >Username<span class="mandatory">*</span></label
+            >
+            <input
+              required="true"
+              type="text"
+              class="form-control form-control-lg"
+              id="username"
+              placeholder="e.g User123"
+              formControlName="username"
+            />
+            <div
+              *ngIf="usernameFC?.dirty || usernameFC?.touched"
+              class="alert-validator mb-3"
+            >
+              <div *ngIf="usernameFC?.errors?.['required']">
+                Username is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label"
+              >Password<span class="mandatory">*</span></label>
+            <input
+              required="true"
+              type="password"
+              class="form-control form-control-lg"
+              id="password"
+              placeholder="e.g *********"
+              formControlName="password"
+            />
+            <div
+              *ngIf="passwordFC?.dirty || passwordFC?.touched"
+              class="alert-validator mb-3"
+            >
+              <div *ngIf="passwordFC?.errors?.['required']">
+                Password is required.
+              </div>
+            </div>
+          </div>
+          <div class="d-grid mt-5">
+            <button type="button" class="btn btn-primary btn-lg" type="button" (click)="validateFields()">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+</div>

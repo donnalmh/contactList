@@ -5,9 +5,12 @@ import { ColDef } from 'ag-grid-community';
 import { ContactListService } from '../shared/contact-list.service';
 import { Contact } from '../shared/contact-list.model';
 import { CellActionsComponent } from './cell-actions/cell-actions.component';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { SubmissionModalComponent } from '../contact-form/modal/submission-modal/submission-modal.component';
+import { AuthGuard } from '../guards/auth-guard.service';
+import { CommonModule } from '@angular/common';
+import { JwtHelperService } from '@auth0/angular-jwt';
 interface IRow {
   make: string;
   model: string;
@@ -19,7 +22,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [AgGridAngular, AgGridModule, RouterModule, SubmissionModalComponent],
+  imports: [AgGridAngular, AgGridModule, RouterModule, SubmissionModalComponent, CommonModule],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.css',
   providers: [ContactListService]
@@ -27,7 +30,14 @@ declare var bootstrap: any;
 
 export class ContactListComponent implements OnInit {
   modalMessage: string = ''
-  constructor(private service:ContactListService) {}
+  public jwtHelper: JwtHelperService = new JwtHelperService();
+  constructor(private service:ContactListService, private router: Router) {}
+
+  isUserAuthenticated() {
+    const token: string | null = localStorage.getItem('token')
+    return token !== '' && token !== undefined && !this.jwtHelper.isTokenExpired(token)
+
+  }
   
   themeClass = "ag-theme-quartz ag-theme-clean";
   columnDefs: ColDef[] = [ 
@@ -43,6 +53,7 @@ export class ContactListComponent implements OnInit {
   rowData: Contact[] = [];
 
   magazineSubject = new Subject<string>();
+  
   ngOnInit(): void {
 
 
@@ -75,6 +86,11 @@ export class ContactListComponent implements OnInit {
         error: (error) => console.error(error)
       }
     )
+  }
+
+  logOut() {
+    localStorage.removeItem("token")
+    this.router.navigate(['/login'])
   }
 
 }

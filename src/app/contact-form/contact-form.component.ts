@@ -14,6 +14,8 @@ import { concatMap, empty, filter } from 'rxjs';
 import moment from 'moment';
 import { SubmissionModalComponent } from './modal/submission-modal/submission-modal.component';
 import { emailValidator } from './validators';
+import { AuthGuard } from '../guards/auth-guard.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 declare var bootstrap: any;
 @Component({
@@ -22,7 +24,7 @@ declare var bootstrap: any;
   imports: [ReactiveFormsModule, NgIf, RouterModule,SubmissionModalComponent, CommonModule],
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css',
-  providers: [ContactListService],
+  providers: [ContactListService, AuthGuard, JwtHelperService],
 })
 export class ContactFormComponent implements OnInit {
   constructor(

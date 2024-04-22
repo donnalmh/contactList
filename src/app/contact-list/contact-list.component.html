@@ -1,7 +1,14 @@
+<div *ngIf="isUserAuthenticated()">Logged in</div>
 <app-submission-modal [message]="modalMessage"></app-submission-modal>
 <div class="header p-4" >
   <div class="row">
-    <div class="col-1"></div>
+    <div class="col-1"> <button
+      (click)="logOut()"
+      type="button"
+      class="btn btn-primary btn-lg  float-end"
+      type="button"
+    >Log Out
+    </button></div>
     <div class="col-1">Contacts</div>
     <div class="col-7"></div>
     <div class="col-2">  <button
