@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -13,12 +13,13 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { concatMap, empty, filter } from 'rxjs';
 import moment from 'moment';
 import { SubmissionModalComponent } from './modal/submission-modal/submission-modal.component';
+import { emailValidator } from './validators';
 
 declare var bootstrap: any;
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, RouterModule,SubmissionModalComponent],
+  imports: [ReactiveFormsModule, NgIf, RouterModule,SubmissionModalComponent, CommonModule],
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css',
   providers: [ContactListService],
@@ -42,8 +43,8 @@ export class ContactFormComponent implements OnInit {
     this.contactForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       surname: new FormControl(''),
-      emailAddress: new FormControl(''),
-      contactNumber: new FormControl(0),
+      emailAddress: new FormControl('', [Validators.required, emailValidator]),
+      contactNumber: new FormControl(undefined),
       dateOfBirth: new FormControl(undefined),
     });
 
@@ -82,6 +83,15 @@ export class ContactFormComponent implements OnInit {
       this.dateOfBirthFC?.value || new Date() 
     );
   }
+
+  validateFields() {
+    if(this.contactForm?.valid) {
+      this.onClick()
+    } else {
+      this.contactForm?.markAllAsTouched();
+    }
+  }
+
   onClick() {
     const data = this.formatData();
 

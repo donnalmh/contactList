@@ -28,6 +28,7 @@
                       required="true"
                       type="name"
                       class="form-control form-control-lg"
+                      [ngClass]="{'invalid': nameFC.invalid && nameFC.touched}"
                       id="name"
                       placeholder="e.g John"
                       formControlName="name"
@@ -51,6 +52,7 @@
                       required="true"
                       type="text"
                       class="form-control  form-control-lg"
+                      [ngClass]="{'invalid': surnameFC.invalid && surnameFC.touched}"
                       id="surname"
                       placeholder="e.g Smit"
                       formControlName="surname"
@@ -76,6 +78,7 @@
                       required="true"
                       type="emailAddress"
                       class="form-control form-control-lg"
+                      [ngClass]="{'invalid': emailAddressFC.invalid && emailAddressFC.touched}"
                       id="emailAddress"
                       placeholder="name@example.com"
                       formControlName="emailAddress"
@@ -87,6 +90,7 @@
                       <div *ngIf="emailAddressFC?.errors?.['required']">
                         Email is required.
                       </div>
+                      <div *ngIf="emailAddressFC?.errors?.['invalidEmail']">Email format is invalid</div>
                     </div>
                 </div>
                 </div>
@@ -99,6 +103,7 @@
                       required="true"
                       type="number"
                       class="form-control form-control-lg"
+                      [ngClass]="{'invalid': contactNumberFC.invalid && contactNumberFC.touched}"
                       id="contactNumber"
                       placeholder="980981234"
                       formControlName="contactNumber"
@@ -124,6 +129,7 @@
                       required="true"
                       type="date"
                       class="form-control form-control-lg"
+                      [ngClass]="{'invalid': dateOfBirthFC.invalid && dateOfBirthFC.touched}"
                       id="dateOfBirth"
                       placeholder="01/01/2000"
                       formControlName="dateOfBirth"
@@ -146,9 +152,8 @@
             <button
               type="button"
               class="btn btn-primary btn-lg"
-              [disabled]="!contactForm.valid"
               type="button"
-              (click)="onClick()"
+              (click)="validateFields()"
             >
               Submit
             </button>
