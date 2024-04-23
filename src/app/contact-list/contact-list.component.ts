@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
@@ -25,13 +25,13 @@ declare var bootstrap: any;
   imports: [AgGridAngular, AgGridModule, RouterModule, SubmissionModalComponent, CommonModule],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.css',
-  providers: [ContactListService]
+  providers: [ContactListService, Router]
 })
 
 export class ContactListComponent implements OnInit {
   modalMessage: string = ''
   public jwtHelper: JwtHelperService = new JwtHelperService();
-  constructor(private service:ContactListService, private router: Router) {}
+  constructor(private service:ContactListService, private router: Router, private elementRef: ElementRef, private renderer: Renderer2) {}
 
   isUserAuthenticated() {
     const token: string | null = localStorage.getItem('token')
@@ -50,21 +50,23 @@ export class ContactListComponent implements OnInit {
     }
   ];
 
-  
 
   rowData: Contact[] = [];
 
   magazineSubject = new Subject<string>();
   ngOnInit(): void {
 
+    const popoverTriggerList = [].slice.call(this.elementRef.nativeElement.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.map((popoverTriggerEl: HTMLElement) => {
+      return new bootstrap.Popover(popoverTriggerEl);
+    });
 
-    // document.addEventListener('click', function (event: any) {
-    //   console.log("event: ",event)
-    //   if (event.target.matches('.popover .popover-body a')) {
-    //     localStorage.removeItem("token")
-    //     router.navigate(['/login'])
-    //   }
-    // });
+    // const self=this;
+    const popoverTriggerList2 = [].slice.call(this.elementRef.nativeElement.querySelectorAll('div.popover-body'));
+    console.log(popoverTriggerList2)
+    document.addEventListener('click', this.handleClick.bind(this));
+
+
 
       this.service.onRefresh().subscribe( value => {
           this.getData();
@@ -82,6 +84,14 @@ export class ContactListComponent implements OnInit {
         })
 
       })
+  }
+
+  handleClick(event: Event) {
+    if ((event.target as HTMLElement).matches('.popover .popover-body a')) {
+      event.preventDefault();
+      localStorage.removeItem('token')
+      this.router.navigate(['/login']); // Access router service methods
+    }
   }
 
   editClick() {

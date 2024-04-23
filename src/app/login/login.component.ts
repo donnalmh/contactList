@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { LoginService } from './login.service';
 import { Contact } from '../shared/contact-list.model';
 import { Login } from './login.model';
@@ -16,7 +21,7 @@ declare var bootstrap: any;
   imports: [CommonModule, ReactiveFormsModule, SubmissionModalComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  providers: [LoginService, AuthGuard, JwtHelperService]
+  providers: [LoginService, AuthGuard, JwtHelperService, Router],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
@@ -24,45 +29,41 @@ export class LoginComponent implements OnInit {
   passwordFC!: FormControl;
   authToken!: string;
 
-  constructor(private service: LoginService,
-    private router: Router
-  ) {}
-
+  constructor(private service: LoginService, private router: Router) {}
+  public jwtHelper: JwtHelperService = new JwtHelperService();
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
- 
-    this.usernameFC = this.loginForm.get('username') as FormControl
-    this.passwordFC = this.loginForm.get('password') as FormControl
+
+    this.usernameFC = this.loginForm.get('username') as FormControl;
+    this.passwordFC = this.loginForm.get('password') as FormControl;
   }
 
   validateFields() {
     // this.loginForm?.markAllAsTouched();
 
-      console.log("valid")
-      this.login()
+    console.log('valid');
+    this.login();
   }
 
-
   login() {
-      this.service.login(new Login(
-        this.usernameFC.value,
-        this.passwordFC.value
-      )).subscribe({
+    this.service
+      .login(new Login(this.usernameFC.value, this.passwordFC.value))
+      .subscribe({
         next: (res: any) => {
-          this.authToken = res.token
-          localStorage.setItem("token", res.token)
-          this.router.navigate(['/'])
+          this.authToken = res.token;
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/']);
         },
-        error: err => {
-          console.error(err)
+        error: (err) => {
+          console.error(err);
           const myModal = new bootstrap.Modal('#exampleModal', {
-            keyboard: false
-          })
+            keyboard: false,
+          });
           myModal.show();
-        }
-      })
+        },
+      });
   }
 }
