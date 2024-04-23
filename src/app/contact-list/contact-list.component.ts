@@ -50,12 +50,21 @@ export class ContactListComponent implements OnInit {
     }
   ];
 
+  
+
   rowData: Contact[] = [];
 
   magazineSubject = new Subject<string>();
-  
   ngOnInit(): void {
 
+
+    // document.addEventListener('click', function (event: any) {
+    //   console.log("event: ",event)
+    //   if (event.target.matches('.popover .popover-body a')) {
+    //     localStorage.removeItem("token")
+    //     router.navigate(['/login'])
+    //   }
+    // });
 
       this.service.onRefresh().subscribe( value => {
           this.getData();
@@ -88,9 +97,24 @@ export class ContactListComponent implements OnInit {
     )
   }
 
+  clickme() {
+    alert("CLICKED")
+  }
+
   logOut() {
     localStorage.removeItem("token")
     this.router.navigate(['/login'])
   }
+
+
+    // document.addEventListener('click', function (event: any) {
+    //   console.log("event: ",event)
+    //   if (event.target.matches('.popover .popover-body a')) {
+    //     localStorage.removeItem("token")
+    //     router.navigate(['/login'])
+    //   }
+    // });
+
+
 
 }
