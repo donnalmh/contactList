@@ -11,6 +11,8 @@ import { SubmissionModalComponent } from '../contact-form/modal/submission-modal
 import { AuthGuard } from '../guards/auth-guard.service';
 import { CommonModule } from '@angular/common';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import moment from 'moment';
+import { CellDate } from './cell-date/cell-date.component';
 interface IRow {
   make: string;
   model: string;
@@ -25,7 +27,7 @@ declare var bootstrap: any;
   imports: [AgGridAngular, AgGridModule, RouterModule, SubmissionModalComponent, CommonModule],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.css',
-  providers: [ContactListService, Router]
+  providers: [ContactListService]
 })
 
 export class ContactListComponent implements OnInit {
@@ -45,9 +47,8 @@ export class ContactListComponent implements OnInit {
     { headerName: 'Surname', field: 'surname' },
     { headerName: 'Phone #', field: 'contactNumber' },
     { headerName: 'Email', field: 'emailAddress' },
-    { headerName: 'D.O.B', field: 'dateOfBirth' },
-    { headerName: 'Actions', field: 'action', cellRenderer: CellActionsComponent
-    }
+    { headerName: 'D.O.B', field: 'dateOfBirth', cellRenderer: CellDate },
+    { headerName: 'Actions', field: 'action', cellRenderer: CellActionsComponent  }
   ];
 
 
@@ -61,7 +62,7 @@ export class ContactListComponent implements OnInit {
       return new bootstrap.Popover(popoverTriggerEl);
     });
 
-    // const self=this;
+    const self=this;
     const popoverTriggerList2 = [].slice.call(this.elementRef.nativeElement.querySelectorAll('div.popover-body'));
     console.log(popoverTriggerList2)
     document.addEventListener('click', this.handleClick.bind(this));
@@ -101,7 +102,12 @@ export class ContactListComponent implements OnInit {
   getData() {
     this.service.getContactDetailList().subscribe(
       {
-        next: (res) => this.rowData = res as Contact[],
+        next: (res) => this.rowData = (res as Contact[]).map( x => {
+          return {
+            ...x,
+            fullWidth: true
+          }
+        }),
         error: (error) => console.error(error)
       }
     )

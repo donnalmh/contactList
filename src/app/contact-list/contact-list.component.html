@@ -5,7 +5,6 @@
       type="button"
       class="btn btn-lg"
       data-bs-toggle="popover"
-      data-bs-title="Popover title"
       data-bs-sanitize="false"
       data-bs-html="true"
       data-bs-trigger='focus'
@@ -81,6 +80,9 @@ Log Out
       [columnDefs]="columnDefs"
       [rowHeight]="50"
       [headerHeight]="70"
+      [embedFullWidthRows]="true"
+      [pagination]="true"
+      [paginationAutoPageSize]="true"
     >
     </ag-grid-angular>
   </div>
