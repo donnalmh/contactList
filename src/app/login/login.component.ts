@@ -21,7 +21,7 @@ declare var bootstrap: any;
   imports: [CommonModule, ReactiveFormsModule, SubmissionModalComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  providers: [LoginService, AuthGuard, JwtHelperService, Router],
+  providers: [LoginService, AuthGuard, JwtHelperService],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
