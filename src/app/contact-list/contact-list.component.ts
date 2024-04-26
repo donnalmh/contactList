@@ -1,5 +1,10 @@
-import { Component, ElementRef, EventEmitter, OnInit, Renderer2 } from '@angular/core';
-
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { ColDef, PaginationChangedEvent } from 'ag-grid-community';
 import { ContactListService } from '../shared/contact-list.service';
@@ -13,6 +18,9 @@ import { CommonModule } from '@angular/common';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import moment from 'moment';
 import { CellDate } from './cell-date/cell-date.component';
+import { columnDefinitions } from '../constants/constant';
+import { ModalService } from '../modal/modal.service';
+import { ModalPopUpComponent } from '../modal/modal-pop-up/modal-pop-up.component';
 interface IRow {
   make: string;
   model: string;
@@ -24,103 +32,100 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [AgGridAngular, AgGridModule, RouterModule, SubmissionModalComponent, CommonModule],
+  imports: [
+    AgGridAngular,
+    AgGridModule,
+    RouterModule,
+    SubmissionModalComponent,
+    ModalPopUpComponent,
+    CommonModule,
+  ],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.css',
-  providers: [ContactListService]
+  providers: [ContactListService],
 })
-
 export class ContactListComponent implements OnInit {
-  itemsPerPage = 100
-  modalMessage: string = ''
-  themeClass = "ag-theme-quartz ag-theme-clean";
+  itemsPerPage = 100;
+  modalMessage: string = '';
+  themeClass = 'ag-theme-quartz ag-theme-clean';
   rowData: Contact[] = [];
+  columnDefs: ColDef[] = columnDefinitions;
 
   public jwtHelper: JwtHelperService = new JwtHelperService();
-  constructor(private service:ContactListService, private router: Router, private elementRef: ElementRef, private renderer: Renderer2) {}
 
-  isUserAuthenticated() {
-    const token: string | null = localStorage.getItem('token')
-    return token !== '' && token !== undefined && !this.jwtHelper.isTokenExpired(token)
+  constructor(
+    private service: ContactListService,
+    private router: Router,
+    private elementRef: ElementRef,
+    private modalService: ModalService,
+    private renderer: Renderer2
+  ) {}
 
-  }
-  
-  columnDefs: ColDef[] = [ 
-    { headerName: 'Name', field: 'name' },
-    { headerName: 'Surname', field: 'surname' },
-    { headerName: 'Phone #', field: 'contactNumber' },
-    { headerName: 'Email', field: 'emailAddress' },
-    { headerName: 'D.O.B', field: 'dateOfBirth', cellRenderer: CellDate },
-    { headerName: 'Actions', field: 'action', cellRenderer: CellActionsComponent  }
-  ];
-
-
-  
   ngOnInit(): void {
+    const popoverTriggerList = [].slice.call(
+      this.elementRef.nativeElement.querySelectorAll(
+        '[data-bs-toggle="popover"]'
+      )
+    );
 
-    const popoverTriggerList = [].slice.call(this.elementRef.nativeElement.querySelectorAll('[data-bs-toggle="popover"]'));
     popoverTriggerList.map((popoverTriggerEl: HTMLElement) => {
       return new bootstrap.Popover(popoverTriggerEl);
     });
 
-    const popoverTriggerList2 = [].slice.call(this.elementRef.nativeElement.querySelectorAll('div.popover-body'));
-    console.log(popoverTriggerList2)
     document.addEventListener('click', this.handleClick.bind(this));
 
-      this.service.onRefresh().subscribe( value => {
-          this.getData();
-        }
-      )
+    this.service.onRefresh().subscribe((value) => {
+      this.getData();
+    });
 
-      this.service.getPopup().subscribe(message => {
-        const myModal = new bootstrap.Modal('#exampleModal', { keyboard: false })
-        const myModalEl = document.getElementById('exampleModal')
+    this.modalService.getPopup().subscribe((message) => {
+      this.showModalUponDelete(message);
+    });
+  }
 
-        this.modalMessage = `You have successfully deleted contact - ${message}`
-        myModal.show();
-        myModalEl?.addEventListener('hidden.bs.modal', event => {
-          this.service.triggerRefresh("A")
-        })
+  showModalUponDelete(message: string) {
+    this.modalMessage = message
+    const myModal = new bootstrap.Modal('#modal', { keyboard: false });
+    const myModalEl = document.getElementById('modal');
 
-      })
+    myModal.show();
+    myModalEl?.addEventListener('hidden.bs.modal', (event) => {
+      this.service.triggerRefresh('A');
+    });
+  }
+
+  isUserAuthenticated() {
+    const token: string | null = localStorage.getItem('token');
+    return (
+      token !== '' &&
+      token !== undefined &&
+      !this.jwtHelper.isTokenExpired(token)
+    );
   }
 
   handleClick(event: Event) {
     if ((event.target as HTMLElement).matches('.popover .popover-body a')) {
       event.preventDefault();
-      localStorage.removeItem('token')
-      this.router.navigate(['/login']); // Access router service methods
+      localStorage.removeItem('token');
+      this.router.navigate(['/login']);
     }
   }
 
-  onGridReady(params: any) {
-    console.log("params: ",params)
-  }
-
-  // onPaginationChanged(params: any){
-  //   console.log("pagination params: ", params)
-  //   if(params.newPage) {
-  //     this.currentPage = params.api.paginationProxy.currentPage;
-  //     this.getData()
-  //   }
-  // }
-
   getData() {
-    this.service.getContactDetailList().subscribe(
-      {
-        next: (res) => this.rowData = (res as Contact[]).map( x => {
+    this.service.getContactDetailList().subscribe({
+      next: (res) =>
+        (this.rowData = (res as Contact[]).map((x) => {
           return {
             ...x,
-            fullWidth: true
-          }
-        }),
-        error: (error) => console.error(error)
-      }
-    )
+            fullWidth: true,
+          };
+        })),
+      error: (error) => console.error(error),
+    });
   }
 
   logOut() {
-    localStorage.removeItem("token")
-    this.router.navigate(['/login'])
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 }

@@ -1,11 +1,10 @@
-<app-submission-modal
-  [message]="
-    this.id
-      ? 'Contact details have been edited successfully.'
-      : 'Contact details have been saved successfully.'
-  "
-></app-submission-modal>
-<div class="p-5 header">
+<app-modal-pop-up  [message]="
+this.id
+  ? 'Contact details have been edited successfully.'
+  : 'Contact details have been saved successfully.'
+"></app-modal-pop-up>
+<div style="height: 60px"></div>
+<div class="p-4 header">
   <button
     type="button"
     class="btn btn-primary btn-lg top-button"

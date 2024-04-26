@@ -7,11 +7,10 @@ import { Login } from './login.model';
   providedIn: 'root'
 })
 export class LoginService {
+  readonly baseURL = environment.apiUrl + '/auth' 
 
    constructor(private http: HttpClient) { }
    
-   readonly baseURL = environment.apiUrl + '/auth' 
-
    login(details: Login) {
     return this.http.post(this.baseURL + '/login', details)
   }

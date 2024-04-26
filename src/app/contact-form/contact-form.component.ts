@@ -16,12 +16,20 @@ import { SubmissionModalComponent } from './modal/submission-modal/submission-mo
 import { emailValidator } from './validators';
 import { AuthGuard } from '../guards/auth-guard.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ModalPopUpComponent } from '../modal/modal-pop-up/modal-pop-up.component';
 
 declare var bootstrap: any;
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, RouterModule,SubmissionModalComponent, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    RouterModule,
+    SubmissionModalComponent,
+    ModalPopUpComponent,
+    CommonModule,
+  ],
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css',
   providers: [ContactListService, AuthGuard, JwtHelperService],
@@ -33,7 +41,7 @@ export class ContactFormComponent implements OnInit {
     private router: Router
   ) {}
 
-  id: number | undefined= undefined;
+  id: number | undefined = undefined;
   contactForm: FormGroup | undefined;
   nameFC!: FormControl;
   surnameFC!: FormControl;
@@ -58,16 +66,16 @@ export class ContactFormComponent implements OnInit {
 
     this.route.queryParamMap
       .pipe(
-        filter(data => !!data.get('id')),
-        concatMap((data1: any) => { 
-          this.id = parseInt(data1.get('id'))
-          return this.service.getContactDetail(this.id)
+        filter((data) => !!data.get('id')),
+        concatMap((data1: any) => {
+          this.id = parseInt(data1.get('id'));
+          return this.service.getContactDetail(this.id);
         })
-        )
+      )
       .subscribe((res: any) => {
+        this.id = res.id;
         this.nameFC.setValue(res.name);
         this.surnameFC.setValue(res.surname);
-        this.id = res.id;
         this.emailAddressFC.setValue(res.emailAddress);
         this.contactNumberFC.setValue(res.contactNumber);
         this.dateOfBirthFC.setValue(
@@ -82,53 +90,46 @@ export class ContactFormComponent implements OnInit {
       this.surnameFC?.value || '',
       this.contactNumberFC?.value || 0,
       this.emailAddressFC?.value || '',
-      this.dateOfBirthFC?.value || new Date() 
+      this.dateOfBirthFC?.value || new Date()
     );
   }
 
   validateFields() {
-    if(this.contactForm?.valid) {
-      this.onClick()
+    if (this.contactForm?.valid) {
+      this.onClick();
     } else {
       this.contactForm?.markAllAsTouched();
     }
   }
 
+  triggerNotificationAndReturn() {
+    const myModal = new bootstrap.Modal('#modal', {
+      keyboard: false,
+    });
+    myModal.show();
+
+    const myModalEl = document.getElementById('modal');
+    myModalEl?.addEventListener('hidden.bs.modal', (event) => {
+      this.service.triggerRefresh('');
+      this.router.navigate(['/']);
+    });
+  };
+
   onClick() {
     const data = this.formatData();
 
 
-    const triggerNotificationAndReturn = () => {
-      const myModal = new bootstrap.Modal('#exampleModal', {
-        keyboard: false
-      })
-      myModal.show();
-      
-      const myModalEl = document.getElementById('exampleModal')
-      myModalEl?.addEventListener('hidden.bs.modal', event => {
-        // do something...
-        this.service.triggerRefresh("A")
-        this.router.navigate(["/"])
-      })
-
-    }
-
-    if(this.id) {
-      console.log("this.id: ", this.id)
-      data.id = this.id
-      this.service.updateContactDetail(data).subscribe(
-        {
-          next: (res) => triggerNotificationAndReturn(),
-          error: (error) => console.error(error)
-        }
-      );
+    if (this.id) {
+      data.id = this.id;
+      this.service.updateContactDetail(data).subscribe({
+        next: (res) => this.triggerNotificationAndReturn(),
+        error: (error) => console.error(error),
+      });
     } else {
-      this.service.postContactDetail(data).subscribe(
-        {
-          next: (res) => triggerNotificationAndReturn(),
-          error: (error) => console.error(error)
-        }
-      );
+      this.service.postContactDetail(data).subscribe({
+        next: (res) => this.triggerNotificationAndReturn(),
+        error: (error) => console.error(error),
+      });
     }
   }
 }

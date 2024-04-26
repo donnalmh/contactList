@@ -10,15 +10,15 @@ import moment from 'moment';
   styleUrl: './cell-date.component.css',
 })
 export class CellDate implements ICellRendererAngularComp {
-  constructor(
-  ) {}
-  date: any
+  constructor() {}
+  date: any;
+
   agInit(params: CellActionParams): void {
-    this.date = moment(params.value).format('DD-MM-YYYY')
-    console.log("date RENDER: ", params)
+    this.date = moment(params.value).format('DD-MM-YYYY');
+    console.log('date RENDER: ', params);
   }
   refresh(params: CellActionParams): boolean {
-    this.date = moment(params.value).format('DD-MM-YYYY')
-    return true
+    this.date = moment(params.value).format('DD-MM-YYYY');
+    return true;
   }
 }
