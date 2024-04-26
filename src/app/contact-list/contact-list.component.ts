@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Renderer2 } from '@angular/core';
 
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, PaginationChangedEvent } from 'ag-grid-community';
 import { ContactListService } from '../shared/contact-list.service';
 import { Contact } from '../shared/contact-list.model';
 import { CellActionsComponent } from './cell-actions/cell-actions.component';
@@ -31,7 +31,11 @@ declare var bootstrap: any;
 })
 
 export class ContactListComponent implements OnInit {
+  itemsPerPage = 100
   modalMessage: string = ''
+  themeClass = "ag-theme-quartz ag-theme-clean";
+  rowData: Contact[] = [];
+
   public jwtHelper: JwtHelperService = new JwtHelperService();
   constructor(private service:ContactListService, private router: Router, private elementRef: ElementRef, private renderer: Renderer2) {}
 
@@ -41,7 +45,6 @@ export class ContactListComponent implements OnInit {
 
   }
   
-  themeClass = "ag-theme-quartz ag-theme-clean";
   columnDefs: ColDef[] = [ 
     { headerName: 'Name', field: 'name' },
     { headerName: 'Surname', field: 'surname' },
@@ -52,9 +55,7 @@ export class ContactListComponent implements OnInit {
   ];
 
 
-  rowData: Contact[] = [];
-
-  magazineSubject = new Subject<string>();
+  
   ngOnInit(): void {
 
     const popoverTriggerList = [].slice.call(this.elementRef.nativeElement.querySelectorAll('[data-bs-toggle="popover"]'));
@@ -62,12 +63,9 @@ export class ContactListComponent implements OnInit {
       return new bootstrap.Popover(popoverTriggerEl);
     });
 
-    const self=this;
     const popoverTriggerList2 = [].slice.call(this.elementRef.nativeElement.querySelectorAll('div.popover-body'));
     console.log(popoverTriggerList2)
     document.addEventListener('click', this.handleClick.bind(this));
-
-
 
       this.service.onRefresh().subscribe( value => {
           this.getData();
@@ -95,9 +93,17 @@ export class ContactListComponent implements OnInit {
     }
   }
 
-  editClick() {
-    console.log("test edit")
+  onGridReady(params: any) {
+    console.log("params: ",params)
   }
+
+  // onPaginationChanged(params: any){
+  //   console.log("pagination params: ", params)
+  //   if(params.newPage) {
+  //     this.currentPage = params.api.paginationProxy.currentPage;
+  //     this.getData()
+  //   }
+  // }
 
   getData() {
     this.service.getContactDetailList().subscribe(
@@ -113,24 +119,8 @@ export class ContactListComponent implements OnInit {
     )
   }
 
-  clickme() {
-    alert("CLICKED")
-  }
-
   logOut() {
     localStorage.removeItem("token")
     this.router.navigate(['/login'])
   }
-
-
-    // document.addEventListener('click', function (event: any) {
-    //   console.log("event: ",event)
-    //   if (event.target.matches('.popover .popover-body a')) {
-    //     localStorage.removeItem("token")
-    //     router.navigate(['/login'])
-    //   }
-    // });
-
-
-
 }

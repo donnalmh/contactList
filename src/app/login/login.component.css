@@ -1,5 +1,20 @@
 .solid-colour {
     background-color: gray;
+    color: lightgray;
+    font-size:40px;
+    font-family: 'Roboto';
+    position: relative;
+    top: 50%;
+}
+
+.invalid {
+    border-color: red;
+  }
+  
+.contact-book-header {
+    position: relative;
+    top: 40%;
+    left: 15%;
 }
 
 .border-gray {

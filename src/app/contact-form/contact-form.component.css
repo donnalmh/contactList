@@ -1,19 +1,27 @@
-.mandatory {
-    color:red;
+
+.header {
+  font-family: "Roboto", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  border-bottom: 1px solid #c8e5ee;
+  color: #999191;
 }
 
-.alert-validator {
-    color: red;
+.top-button {
+  margin-left:10rem;
+}
+
+.contact-header {
+  font-family: "Roboto", sans-serif;
+  font-size: 30px;
+  color: #999191;
+  font-weight: 700;
 }
 
 .invalid {
   border-color: red;
 }
 
-.header {
-    font-size:50px;
-    color: #625757;
-}
 
 .card {
     padding: 3rem 5rem 4rem;

@@ -42,9 +42,6 @@ export class LoginComponent implements OnInit {
   }
 
   validateFields() {
-    // this.loginForm?.markAllAsTouched();
-
-    console.log('valid');
     this.login();
   }
 

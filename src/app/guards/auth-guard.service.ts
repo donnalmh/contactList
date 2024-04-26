@@ -7,16 +7,12 @@ import { JwtHelperService } from "@auth0/angular-jwt";
   })
 export class AuthGuard{
 
-    constructor(private router: Router) {
-        console.log("initialieing authguard")
-    }
+    constructor(private router: Router) { }
+    
     public jwtHelper: JwtHelperService = new JwtHelperService();
     canActivate(): boolean {
-        console.log("authenticating")
         const token = localStorage.getItem('token')
-        console.log("authenticating")
         if(token && !this.jwtHelper.isTokenExpired(token)){
-            console.log("authenticating")
             return true;
         }
 
