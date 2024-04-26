@@ -22,6 +22,7 @@ export class CellActionsComponent implements ICellRendererAngularComp {
   agInit(params: CellActionParams): void {
     this.params = params;
   }
+  
   refresh(params: CellActionParams): boolean {
     this.params = params;
     return true;

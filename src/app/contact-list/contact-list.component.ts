@@ -12,7 +12,6 @@ import { Contact } from '../shared/contact-list.model';
 import { CellActionsComponent } from './cell-actions/cell-actions.component';
 import { Router, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
-import { SubmissionModalComponent } from '../contact-form/modal/submission-modal/submission-modal.component';
 import { AuthGuard } from '../guards/auth-guard.service';
 import { CommonModule } from '@angular/common';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -36,7 +35,6 @@ declare var bootstrap: any;
     AgGridAngular,
     AgGridModule,
     RouterModule,
-    SubmissionModalComponent,
     ModalPopUpComponent,
     CommonModule,
   ],
@@ -84,7 +82,7 @@ export class ContactListComponent implements OnInit {
   }
 
   showModalUponDelete(message: string) {
-    this.modalMessage = message
+    this.modalMessage = message;
     const myModal = new bootstrap.Modal('#modal', { keyboard: false });
     const myModalEl = document.getElementById('modal');
 
