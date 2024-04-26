@@ -25,9 +25,8 @@ export class ContactListService {
     return this.http.get(`${this.baseURL}/${id}`, this.httpOptions)
   }
 
-
   getContactDetailList() {
-    return this.http.get(this.baseURL, this.httpOptions)
+    return this.http.get(`${this.baseURL}?Page=1&ItemsPerPage=1000`, this.httpOptions)
   }
 
   postContactDetail(payload: Contact) {
