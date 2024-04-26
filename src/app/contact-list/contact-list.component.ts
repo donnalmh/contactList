@@ -18,7 +18,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import moment from 'moment';
 import { CellDate } from './cell-date/cell-date.component';
 import { columnDefinitions } from '../constants/constant';
-import { ModalService } from '../modal/modal.service';
+import { ModalProps, ModalService } from '../modal/modal.service';
 import { ModalPopUpComponent } from '../modal/modal-pop-up/modal-pop-up.component';
 interface IRow {
   make: string;
@@ -76,21 +76,21 @@ export class ContactListComponent implements OnInit {
       this.getData();
     });
 
-    this.modalService.getPopup().subscribe((message) => {
-      this.showModalUponDelete(message);
-    });
+    // this.modalService.getPopup().subscribe((props: ModalProps)) => {
+    //   this.showModalUponDelete(message);
+    // });
   }
 
-  showModalUponDelete(message: string) {
-    this.modalMessage = message;
-    const myModal = new bootstrap.Modal('#modal', { keyboard: false });
-    const myModalEl = document.getElementById('modal');
+  // showModalUponDelete(message: string) {
+  //   this.modalMessage = message;
+  //   const myModal = new bootstrap.Modal('#modal', { keyboard: false });
+  //   const myModalEl = document.getElementById('modal');
 
-    myModal.show();
-    myModalEl?.addEventListener('hidden.bs.modal', (event) => {
-      this.service.triggerRefresh('A');
-    });
-  }
+  //   myModal.show();
+  //   myModalEl?.addEventListener('hidden.bs.modal', (event) => {
+  //     this.service.triggerRefresh('A');
+  //   });
+  // }
 
   isUserAuthenticated() {
     const token: string | null = localStorage.getItem('token');

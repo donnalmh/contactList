@@ -12,13 +12,13 @@ import { Login } from './login.model';
 import { Router } from '@angular/router';
 import { AuthGuard } from '../guards/auth-guard.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { SubmissionModalComponent } from '../contact-form/modal/submission-modal/submission-modal.component';
+import { ModalPopUpComponent } from '../modal/modal-pop-up/modal-pop-up.component';
 
 declare var bootstrap: any;
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SubmissionModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, ModalPopUpComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [LoginService, AuthGuard, JwtHelperService],

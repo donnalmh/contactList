@@ -38,8 +38,9 @@ export class CellActionsComponent implements ICellRendererAngularComp {
   onDeleteClick(): void {
     this.service.deleteContactDetail(this.params.data.id).subscribe({
       next: (res) =>
-        this.modalService.displayPopupMessage(
-          `You have successfully deleted contact - ${this.params.data.name} ${this.params.data.surname}`
+        this.modalService.displayPopupMessage({type: 'delete' ,
+          message: `You have successfully deleted contact - ${this.params.data.name} ${this.params.data.surname}`
+        }
         ),
       error: (error) => console.error(error),
     });

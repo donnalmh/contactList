@@ -12,10 +12,10 @@ import { Contact } from '../shared/contact-list.model';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { concatMap, empty, filter } from 'rxjs';
 import moment from 'moment';
-import { SubmissionModalComponent } from './modal/submission-modal/submission-modal.component';
 import { emailValidator } from './validators';
 import { AuthGuard } from '../guards/auth-guard.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ModalService } from '../modal/modal.service';
 import { ModalPopUpComponent } from '../modal/modal-pop-up/modal-pop-up.component';
 
 declare var bootstrap: any;
@@ -26,9 +26,8 @@ declare var bootstrap: any;
     ReactiveFormsModule,
     NgIf,
     RouterModule,
-    SubmissionModalComponent,
     ModalPopUpComponent,
-    CommonModule,
+    CommonModule
   ],
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css',
@@ -38,7 +37,7 @@ export class ContactFormComponent implements OnInit {
   constructor(
     private service: ContactListService,
     private route: ActivatedRoute,
-    private router: Router
+    private modalService: ModalService
   ) {}
 
   id: number | undefined = undefined;
@@ -103,17 +102,20 @@ export class ContactFormComponent implements OnInit {
   }
 
   triggerNotificationAndReturn() {
-    const myModal = new bootstrap.Modal('#modal', {
-      keyboard: false,
-    });
-    myModal.show();
+    this.modalService.displayPopupMessage(
+      { type: 'edit', message: 'edited or saved'}
+    )
+    // const myModal = new bootstrap.Modal('#modal', {
+    //   keyboard: false,
+    // });
+    // myModal.show();
 
-    const myModalEl = document.getElementById('modal');
-    myModalEl?.addEventListener('hidden.bs.modal', (event) => {
-      this.service.triggerRefresh('');
-      this.router.navigate(['/']);
-    });
-  };
+    // const myModalEl = document.getElementById('modal');
+    // myModalEl?.addEventListener('hidden.bs.modal', (event) => {
+    //   this.service.triggerRefresh('');
+    //   this.router.navigate(['/']);
+    // });
+  }
 
   onClick() {
     const data = this.formatData();

@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+export  interface ModalProps {
+  type: 'delete' | 'edit',
+  message: string
+}
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class ModalService {
-  private toastSubject = new Subject<string>();
+  private toastSubject = new Subject<ModalProps>();
 
   constructor() {}
 
-  displayPopupMessage(message: string) {
-    this.toastSubject.next(message);
+  displayPopupMessage(props: ModalProps) {
+    this.toastSubject.next(props);
   }
 
   getPopup() {
