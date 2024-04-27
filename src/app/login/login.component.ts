@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { AuthGuard } from '../guards/auth-guard.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ModalPopUpComponent } from '../modal/modal-pop-up/modal-pop-up.component';
+import { ModalService } from '../modal/modal.service';
 
 declare var bootstrap: any;
 @Component({
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
   passwordFC!: FormControl;
   authToken!: string;
 
-  constructor(private service: LoginService, private router: Router) {}
+  constructor(private service: LoginService, private router: Router, private modalService: ModalService) {}
   public jwtHelper: JwtHelperService = new JwtHelperService();
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -55,8 +56,11 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/']);
         },
         error: (err) => {
+          this.modalService.displayPopupMessage(
+            { type: 'login-error', message: 'Login unsuccessful. Please check your username or password again.'}
+          )
           console.error(err);
-          const myModal = new bootstrap.Modal('#exampleModal', {
+          const myModal = new bootstrap.Modal('#modal', {
             keyboard: false,
           });
           myModal.show();

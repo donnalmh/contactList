@@ -1,5 +1,5 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -33,7 +33,7 @@ declare var bootstrap: any;
   styleUrl: './contact-form.component.css',
   providers: [ContactListService, AuthGuard, JwtHelperService],
 })
-export class ContactFormComponent implements OnInit {
+export class ContactFormComponent implements OnInit, OnDestroy {
   constructor(
     private service: ContactListService,
     private route: ActivatedRoute,
@@ -103,23 +103,12 @@ export class ContactFormComponent implements OnInit {
 
   triggerNotificationAndReturn() {
     this.modalService.displayPopupMessage(
-      { type: 'edit', message: 'edited or saved'}
+      { type: 'edit', message: `Your contact details for ${this.nameFC.value} ${this.surnameFC.value} have been ${this.id ? 'edited' : 'saved'} successfully.`}
     )
-    // const myModal = new bootstrap.Modal('#modal', {
-    //   keyboard: false,
-    // });
-    // myModal.show();
-
-    // const myModalEl = document.getElementById('modal');
-    // myModalEl?.addEventListener('hidden.bs.modal', (event) => {
-    //   this.service.triggerRefresh('');
-    //   this.router.navigate(['/']);
-    // });
   }
 
   onClick() {
     const data = this.formatData();
-
 
     if (this.id) {
       data.id = this.id;
@@ -133,5 +122,9 @@ export class ContactFormComponent implements OnInit {
         error: (error) => console.error(error),
       });
     }
+  }
+
+  ngOnDestroy(): void {
+      
   }
 }

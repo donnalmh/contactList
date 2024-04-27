@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 export  interface ModalProps {
-  type: 'delete' | 'edit',
+  type: 'delete' | 'edit' | 'login-error' | undefined,
   message: string
 }
 
@@ -10,6 +10,8 @@ export  interface ModalProps {
 })
 
 export class ModalService {
+  private modalVisible = false;
+  modalVisibilityChanged = new Subject<boolean>();
   private toastSubject = new Subject<ModalProps>();
 
   constructor() {}
@@ -20,5 +22,10 @@ export class ModalService {
 
   getPopup() {
     return this.toastSubject.asObservable();
+  }
+
+  toggleVisibility(): void {
+    this.modalVisible = !this.modalVisible
+    this.modalVisibilityChanged.next(this.modalVisible)
   }
 }

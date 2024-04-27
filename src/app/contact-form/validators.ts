@@ -8,8 +8,6 @@ export function emailValidator(control: AbstractControl): { [key: string]: any }
   // Check if the control's value matches the email pattern
   const valid = emailRegex.test(control.value);
 
-  console.log("valid: ",valid)
-
   // Return validation result
   return valid ? null : { 'invalidEmail': true };
 }

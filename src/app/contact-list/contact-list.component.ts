@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Renderer2,
 } from '@angular/core';
@@ -11,7 +12,7 @@ import { ContactListService } from '../shared/contact-list.service';
 import { Contact } from '../shared/contact-list.model';
 import { CellActionsComponent } from './cell-actions/cell-actions.component';
 import { Router, RouterModule } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { AuthGuard } from '../guards/auth-guard.service';
 import { CommonModule } from '@angular/common';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -42,12 +43,13 @@ declare var bootstrap: any;
   styleUrl: './contact-list.component.css',
   providers: [ContactListService],
 })
-export class ContactListComponent implements OnInit {
+export class ContactListComponent implements OnInit, OnDestroy {
   itemsPerPage = 100;
   modalMessage: string = '';
   themeClass = 'ag-theme-quartz ag-theme-clean';
   rowData: Contact[] = [];
   columnDefs: ColDef[] = columnDefinitions;
+  onRefresh: Subscription | undefined 
 
   public jwtHelper: JwtHelperService = new JwtHelperService();
 
@@ -72,25 +74,10 @@ export class ContactListComponent implements OnInit {
 
     document.addEventListener('click', this.handleClick.bind(this));
 
-    this.service.onRefresh().subscribe((value) => {
+    this.onRefresh = this.service.onRefresh().subscribe((value) => {
       this.getData();
     });
-
-    // this.modalService.getPopup().subscribe((props: ModalProps)) => {
-    //   this.showModalUponDelete(message);
-    // });
   }
-
-  // showModalUponDelete(message: string) {
-  //   this.modalMessage = message;
-  //   const myModal = new bootstrap.Modal('#modal', { keyboard: false });
-  //   const myModalEl = document.getElementById('modal');
-
-  //   myModal.show();
-  //   myModalEl?.addEventListener('hidden.bs.modal', (event) => {
-  //     this.service.triggerRefresh('A');
-  //   });
-  // }
 
   isUserAuthenticated() {
     const token: string | null = localStorage.getItem('token');
@@ -125,5 +112,9 @@ export class ContactListComponent implements OnInit {
   logOut() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  ngOnDestroy(): void {
+      this.onRefresh?.unsubscribe();
   }
 }

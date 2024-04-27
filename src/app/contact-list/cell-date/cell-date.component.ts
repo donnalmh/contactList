@@ -15,7 +15,6 @@ export class CellDate implements ICellRendererAngularComp {
 
   agInit(params: CellActionParams): void {
     this.date = moment(params.value).format('DD-MM-YYYY');
-    console.log('date RENDER: ', params);
   }
   refresh(params: CellActionParams): boolean {
     this.date = moment(params.value).format('DD-MM-YYYY');
