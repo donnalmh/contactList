@@ -57,8 +57,6 @@ export class ContactListComponent implements OnInit, OnDestroy {
     private service: ContactListService,
     private router: Router,
     private elementRef: ElementRef,
-    private modalService: ModalService,
-    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {

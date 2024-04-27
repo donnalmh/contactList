@@ -14,12 +14,12 @@ declare var bootstrap: any;
 })
 export class ModalPopUpComponent implements OnInit, OnDestroy {
   message: string = '';
-  popup: Subscription | undefined
+  popup: Subscription | undefined;
   private isEventListenerAdded = false;
   private modalProps: ModalProps = {
     type: undefined,
-    message: ''
-  }
+    message: '',
+  };
 
   constructor(
     private modalService: ModalService,
@@ -28,21 +28,19 @@ export class ModalPopUpComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if(!this.isEventListenerAdded) {
+    if (!this.isEventListenerAdded) {
       const myModalEl = document.getElementById('modal');
 
       myModalEl?.addEventListener('hidden.bs.modal', (event: any) => {
-          if(this.modalProps.type === 'delete' ) {
-            this.service.triggerRefresh('')
-          }
-          if(this.modalProps.type === 'edit') {
-            this.router.navigate(['/']);
-          }
+        if (this.modalProps.type === 'delete') {
+          this.service.triggerRefresh('');
         }
-      ) 
+        if (this.modalProps.type === 'edit') {
+          this.router.navigate(['/']);
+        }
+      });
       this.isEventListenerAdded = true;
     }
-
 
     this.popup = this.modalService.getPopup().subscribe((props: ModalProps) => {
       this.modalProps = props;
@@ -51,13 +49,13 @@ export class ModalPopUpComponent implements OnInit, OnDestroy {
   }
 
   handleHiddenModal = (event: any) => {
-      if(this.modalProps.type === 'delete' ) {
-        this.service.triggerRefresh('')
-      }
-      if(this.modalProps.type === 'edit') {
-        this.router.navigate(['/']);
-      }
-  }
+    if (this.modalProps.type === 'delete') {
+      this.service.triggerRefresh('');
+    }
+    if (this.modalProps.type === 'edit') {
+      this.router.navigate(['/']);
+    }
+  };
 
   showModal() {
     this.message = this.modalProps.message;
@@ -69,6 +67,5 @@ export class ModalPopUpComponent implements OnInit, OnDestroy {
     const myModalEl = document.getElementById('modal');
     myModalEl?.removeEventListener('hidden.bs.modal', this.handleHiddenModal);
     this.popup?.unsubscribe();
-    
   }
 }
