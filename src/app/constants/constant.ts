@@ -2,7 +2,7 @@ import { CellActionsComponent } from "../contact-list/cell-actions/cell-actions.
 import { CellDate } from "../contact-list/cell-date/cell-date.component";
 
 export const columnDefinitions = [ 
-    { headerName: 'Name', field: 'name' },
+    { headerName: 'Name', field: 'name', filter: true },
     { headerName: 'Surname', field: 'surname' },
     { headerName: 'Phone #', field: 'contactNumber' },
     { headerName: 'Email', field: 'emailAddress' },
