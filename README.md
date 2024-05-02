@@ -6,6 +6,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 To start running the Web APIs, go to https://github.com/donnalmh/ContactListDevASP and fork the repository and launch in Visual Studio.
 Go to Start Without Debugging to launch the APIs. To test the APIs, the swagger should at http://localhost:7128/swagger/index.html.
 
+## Installation
+
+To install the package.json modules, run `npm install`.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
